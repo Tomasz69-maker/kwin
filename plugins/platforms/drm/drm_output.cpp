@@ -625,6 +625,11 @@ void DrmOutput::dpmsFinishOff()
 {
     qCDebug(KWIN_DRM) << "DPMS mode set for output" << m_crtc->id() << "to Off.";
 
+    auto wlOutput = waylandOutput();
+    if (wlOutput) {
+        wlOutput->setDpmsMode(toWaylandDpmsMode(DpmsMode::Off));
+    }
+
     if (isEnabled()) {
         waylandOutput()->setDpmsMode(toWaylandDpmsMode(m_dpmsModePending));
         m_backend->createDpmsFilter();
